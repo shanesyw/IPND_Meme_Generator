@@ -93,7 +93,11 @@ def meme_post():
     try:
         r = requests.get(download_path, allow_redirects=True)
         extName = download_path.split('.')[-1]
-        tmp = f'./tmp/{random.randint(0, 100000000)}.{extName}'
+
+        if not os.path.exists('./static/'):
+            os.makedirs('./static/')
+
+        tmp = f'./static/{random.randint(0, 100000000)}.{extName}'
         open(tmp, 'wb').write(r.content)
     except (requests.exceptions.MissingSchema,
             requests.exceptions.ConnectionError) as e:
