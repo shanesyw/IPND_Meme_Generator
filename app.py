@@ -108,7 +108,7 @@ def meme_post():
 
         tmp = f'./static/{random.randint(0, 100000000)}.{extName}'
         open(tmp, 'wb').write(r.content)
-    except (requests.exceptions.MissingSchema,
+    except (OSError, requests.exceptions.MissingSchema,
             requests.exceptions.ConnectionError) as e:
         print(e)
         path = meme.make_meme("./_data/photos/starwars/starwars3.jpg",
