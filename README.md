@@ -4,7 +4,7 @@
 
 The goal of this project is to build a "meme generator" – a multimedia application to dynamically generate memes, including an image with an overlaid quote.
 
-To better reflect project instruction, I have updated the application logic from starter code. We would make both author and body as necessary instead of either raising exception for the other or just missing that value. In the console app, if there's any missing element (either for author or quote body), we will randomly generate author and quote based on our databse. For the web app, if there's any missing element, we will handle it by making a meme to tell the user what is the error.
+To better reflect project instruction, I have updated the application logic from starter code. We would make both author and body as necessary instead of either raising exception for the other or just missing that value. In the console app, if there's any missing element (either for author or quote body), we will randomly generate author and quote based on our databse. For the web app, if there's any missing element, we will handle it by making a meme to tell the user what is the error. We will attemtp the word wrap the quote set input by the user; however, when it gets unnecessarily too long (>120 characters), it defeats the purpose of meme, we will make a meme to tell the user.
 
 The PDF to text conversion is using the open source xpdfReader executable. It is included in the project for convenience.
 https://www.xpdfreader.com/pdftotext-man.html

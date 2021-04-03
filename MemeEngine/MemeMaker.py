@@ -1,9 +1,11 @@
 """MemeMaker.py implementation."""
 
-from PIL import Image, ImageDraw, ImageFont
-from QuoteEngine import QuoteModel
+from PIL import Image, ImageDraw, ImageFont, UnidentifiedImageError
+import textwrap
 import random
 import os
+
+from QuoteEngine import QuoteModel
 
 
 class MemeMaker():
@@ -28,7 +30,11 @@ class MemeMaker():
         Returns:
             str -- the file path to the output image.
         """
-        img = Image.open(in_path)
+        try:
+            img = Image.open(in_path)
+        except UnidentifiedImageError as e:
+            print(e)
+            return None
 
         new_height = int(width*(img.size[1]/img.size[0]))
         img = img.resize((width, new_height), Image.NEAREST)
@@ -39,10 +45,16 @@ class MemeMaker():
 
         # create a random location
         text_x = random.randint(0, int(width/5))
-        text_y = random.randint(0, new_height-22)
-        draw.rectangle([text_x, text_y+1, width, text_y + 22], fill='black')
-        draw.text((text_x, text_y), str(QuoteModel.create(text, author)),
-                  font=font, fill='white')
+        text_y = random.randint(0, new_height-70)
+
+        lines = textwrap.wrap(str(QuoteModel.create(text, author)), 50)
+
+        for line in lines:
+            draw.rectangle([text_x, text_y+1, width, text_y + 22],
+                           fill='black')
+            font_width, font_height = font.getsize(line)
+            draw.text((text_x, text_y), line, font=font, fill='white')
+            text_y += font_height
 
         tmp = f'{self.output_dir}/{random.randint(0,1000000)}.jpg'
 

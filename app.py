@@ -86,10 +86,19 @@ def meme_post():
     author = request.form['body']
     body = request.form['author']
 
+    # check if valid quote set has been entered
     if request.form['body'] == "" or request.form['author'] == "":
         body = "Your quote has nothing!"
         author = "Darth Woofer"
 
+    # if quote is too long, make an error meme
+    if len(body) + len(author) > 120:
+        body = f"Your quote is too long to the point " + \
+               f"that people reading the meme has lost interest!"
+        author = "Darth Woofer"
+
+    # try to download the reference image
+    # if there's any exception, make an error meme
     try:
         r = requests.get(download_path, allow_redirects=True)
         extName = download_path.split('.')[-1]
@@ -107,6 +116,12 @@ def meme_post():
         return render_template('meme.html', path=path)
 
     path = meme.make_meme(tmp, body, author)
+
+    # if we cannot make a meme due to bad image
+    # make an error meme
+    if path is None:
+        path = meme.make_meme("./_data/photos/starwars/starwars3.jpg",
+                              'Your URL is not an image!!', 'Darth Woofer')
 
     return render_template('meme.html', path=path)
 
